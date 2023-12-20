@@ -11,6 +11,8 @@ const port = 5000;
 
 const mongoose = require("mongoose");
 const { auth } = require("./middleware/auth");
+const { FavoriteData } = require("./models/Favorite");
+
 mongoose
   .connect(config.mongoURI)
   .then(() => console.log("몽고DB 접속"))
@@ -49,7 +51,6 @@ app.post("/api/users/login", (req, res) => {
     userData
       .generateToken()
       .then((userInfo) => {
-        console.log(userInfo);
         res
           .cookie("myCookie", userInfo.token)
           .status(200)
@@ -81,6 +82,60 @@ app.get("/api/users/logout", auth, (req, res) => {
     })
     .catch((err) => {
       return res.json({ success: false, err: err });
+    });
+});
+
+app.post("/api/favorite/favoriteNumber", (req, res) => {
+  FavoriteData.find({ movieId: req.body.movieId })
+    .then((info) => {
+      console.log("41242141", info.length);
+      return res
+        .status(200)
+        .json({ success: true, FavoriteNumber: info.length });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
+    });
+});
+
+app.post("/api/favorite/favorited", (req, res) => {
+  FavoriteData.find({ movieId: req.body.movieId, userForm: req.body.userForm })
+    .then((info) => {
+      let result = false;
+      if (info.length !== 0) {
+        result = true;
+      }
+      console.log("result", result);
+      return res.status(200).json({ success: true, favorited: result });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
+    });
+});
+
+app.post("/api/favorite/removeFormFavorite", (req, res) => {
+  FavoriteData.findOneAndDelete({
+    movieId: req.body.movieId,
+    userForm: req.body.userForm,
+  })
+    .then((data) => {
+      return res.status(200).json({ success: true, data });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
+    });
+});
+
+app.post("/api/favorite/addToFavorite", (req, res) => {
+  const favorite = new FavoriteData(req.body);
+
+  favorite
+    .save()
+    .then((data) => {
+      return res.status(200).json({ success: true, data });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
     });
 });
 

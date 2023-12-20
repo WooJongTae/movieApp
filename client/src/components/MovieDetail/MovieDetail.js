@@ -7,8 +7,11 @@ import MainImage from "../LoadingPage/MainImage.js/MainImage";
 import MovieInfo from "./MovieInfo/MovieInfo";
 import { Row } from "antd";
 import GridCards from "../commons/GridCards";
+import Favorite from "./Favorite/Favorite";
 
 function MovieDetail() {
+  const userId = JSON.parse(localStorage.getItem("loginSuccess")).userId;
+  console.log(userId);
   const [Movie, setMovie] = useState([]);
   const [Casts, setCasts] = useState([]);
   const [CastToggle, setCastToggle] = useState(false);
@@ -70,6 +73,13 @@ function MovieDetail() {
         />
       )}
       <div className={` w-[85%] my-4 mx-auto`}>
+        <div className={`flex justify-end`}>
+          <Favorite
+            movieInfo={Movie}
+            movieId={params.movieId}
+            userForm={userId}
+          />
+        </div>
         <MovieInfo movie={Movie} />
         <br />
         <div className={`flex justify-center m-8`}>

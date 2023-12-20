@@ -22,6 +22,7 @@ function Auth(SpecificComponent, option, adminRoute = null) {
               navigate("/");
             } else {
               if (!option) {
+                // 이부분 수정요망
                 navigate("/");
               }
             }

@@ -8,15 +8,13 @@ let auth = (req, res, next) => {
 
   UserData.findByToken(token)
     .then((user) => {
-      console.log("굿굿굿11", user);
       if (!user) {
-        console.log("ㅎㅇㅎㅇㅎㅇ22", user);
         return res.json({ isAuth: false, err: "에러 발생입니다ㅎㅇㅎㅇ." });
       } else {
         console.log(token, user);
         req.token = token;
         req.user = user;
-        console.log("여긴오나?");
+
         next();
       }
     })
