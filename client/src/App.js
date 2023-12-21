@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar/Navbar";
 import LoginPage from "./components/LoginPage/LoginPage";
 import Auth from "./hoc/Auth";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
+import FavoritePage from "./components/FavoritePage/FavoritePage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={Auth(RegisterPage, false)} />
         <Route path="/login" element={Auth(LoginPage, false)} />
         <Route path="/movie/:movieId" element={Auth(MovieDetail, true)} />
+        <Route path="/favorite" element={Auth(FavoritePage, true)} />
       </Route>
     </Routes>
   );

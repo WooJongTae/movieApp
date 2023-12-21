@@ -139,6 +139,29 @@ app.post("/api/favorite/addToFavorite", (req, res) => {
     });
 });
 
+app.post("/api/favorite/getFavoredMovie", (req, res) => {
+  FavoriteData.find({ userForm: req.body.userForm })
+    .then((data) => {
+      return res.status(200).json({ success: true, data });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
+    });
+});
+
+app.post("/api/favorite/removeFormFavorite", (req, res) => {
+  FavoriteData.findByIdAndDelete({
+    movieId: req.body.movieId,
+    userForm: req.body.userForm,
+  })
+    .then((data) => {
+      return res.status(200).json({ success: true, data });
+    })
+    .catch((err) => {
+      return res.status(400).send(err);
+    });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
